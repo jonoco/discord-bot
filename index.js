@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { Client, Intents, Collection } = require('discord.js')
+const { Client, Intents, Collection, GatewayIntentBits } = require('discord.js')
 const { getJoke } = require('./joke')
 const { token } = require('./config.json')
 
@@ -7,12 +7,9 @@ require('dotenv').config()
 
 const client = new Client({ 
     intents: [
-        Intents.FLAGS.GUILDS, 
-        Intents.FLAGS.GUILD_MESSAGES
-    ],
-    partials: [
-        'MESSAGE', 'REACTION', 'CHANNEL', 'USER'
-    ] 
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages
+    ]
 })
 
 client.commands = new Collection()
@@ -37,7 +34,9 @@ client.on('ready', () => {
 })
 
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return
+    if (!interaction.isChatInputCommand()) return
+    
+    console.log(`interaction: ${interaction}`)
 
 	const command = client.commands.get(interaction.commandName)
 
