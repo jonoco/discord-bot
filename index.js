@@ -1,53 +1,62 @@
-const fs = require('fs')
-const { Client, Intents, Collection, GatewayIntentBits } = require('discord.js')
-const { getJoke } = require('./joke')
-const { token } = require('./config.json')
+const fs = require("fs");
+const {
+  Client,
+  Intents,
+  Collection,
+  GatewayIntentBits,
+} = require("discord.js");
+const { getJoke } = require("./joke");
+const { token } = require("./config.json");
 
-require('dotenv').config()
+require("dotenv").config();
 
-const client = new Client({ 
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages
-    ]
-})
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+});
 
-client.commands = new Collection()
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'))
+client.commands = new Collection();
+const commandFiles = fs
+  .readdirSync("./commands")
+  .filter((file) => file.endsWith(".js"));
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`)
-    client.commands.set(command.data.name, command)
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.data.name, command);
 }
 
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'))
+const eventFiles = fs
+  .readdirSync("./events")
+  .filter((file) => file.endsWith(".js"));
 for (const file of eventFiles) {
-    const event = require(`./events/${file}`)
-    if (event.once) {
-        client.once(event.name, (...args) => event.execute(...args))
-    } else {
-        client.on(event.name, (...args) => event.execute(...args))
-    }
+  const event = require(`./events/${file}`);
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
+  }
 }
 
-client.on('ready', () => {
-    console.log('Bot is ready')
-})
+client.on("ready", () => {
+  console.log("Bot is ready");
+});
 
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isChatInputCommand()) return
-    
-    console.log(`interaction: ${interaction}`)
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
 
-	const command = client.commands.get(interaction.commandName)
+  console.log(`interaction: ${interaction}`);
 
-    if (!command) return
+  const command = client.commands.get(interaction.commandName);
 
-    try {
-        await command.execute(interaction)
-    } catch (error) {
-        console.error(error)
-        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })
-    }
-})
+  if (!command) return;
 
-client.login(token)
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    await interaction.reply({
+      content: "There was an error while executing this command!",
+      ephemeral: true,
+    });
+  }
+});
+
+client.login(token);
