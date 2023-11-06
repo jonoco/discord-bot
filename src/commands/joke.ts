@@ -1,3 +1,14 @@
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { CommandInteraction } from "discord.js";
+
+export const data = new SlashCommandBuilder()
+  .setName("joke")
+  .setDescription("Replies with a joke!");
+
+export async function execute(interaction: CommandInteraction) {
+  await interaction.reply(getJoke());
+}
+
 const jokes = [
   "I went to a street where the houses were numbered 8k, 16k, 32k, 64k, 128k, 256k and 512k. It was a trip down Memory Lane.",
   "“Debugging” is like being the detective in a crime drama where you are also the murderer.",
@@ -17,5 +28,3 @@ const jokes = [
 const getJoke = () => {
   return jokes[Math.floor(Math.random() * jokes.length)];
 };
-
-module.exports = { getJoke };

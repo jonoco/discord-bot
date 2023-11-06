@@ -4,15 +4,24 @@
   "description": "Discord bot template",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "lint:prettier": "prettier --check ."
+    "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "dev": "npm run build:live",
+    "lint:tsc" : "tsc --noEmit",
+    "lint:prettier": "prettier --check .",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" -r tsconfig-paths/register src/index.ts",
+    "deploy-commands": "ts-node ./src/deploy/deploy-commands.ts"
+  },
+  "engines": {
+    "node": "18.x"
   },
   "keywords": [],
   "author": "Joshua Cox",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.2.0",
-    "dotenv": "^16.0.1 "
+    "dotenv": "^16.0.1 ",
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
     "@discordjs/builders": "^1.1.0",
@@ -21,6 +30,8 @@
     "eslint": "^8.53.0",
     "eslint-config-prettier": "^9.0.0",
     "nodemon": "^2.0.15",
-    "prettier": "3.0.3"
+    "prettier": "3.0.3",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0"
   }
 }
