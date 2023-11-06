@@ -1,12 +1,19 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import { Command } from '@/types/types';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { CommandInteraction } from 'discord.js';
 
-export const data = new SlashCommandBuilder()
-  .setName("user")
-  .setDescription("Replies with user info!");
+const data = new SlashCommandBuilder()
+  .setName('user')
+  .setDescription('Replies with user info!');
 
-export async function execute(interaction: CommandInteraction) {
+async function execute(interaction: CommandInteraction) {
   await interaction.reply(
-    `Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}`,
+    `Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}`
   );
 }
+
+const command: Command = {
+  data,
+  execute,
+};
+export default command;

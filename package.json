@@ -1,16 +1,17 @@
 {
-  "name": "discord-bot",
+  "name": "adiscord-bot",
   "version": "1.0.0",
-  "description": "Discord bot template",
+  "description": "AI Discord bot",
   "main": "index.js",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "dev": "npm run build:live",
+    "prettier": "prettier --write .",
     "lint:tsc" : "tsc --noEmit",
     "lint:prettier": "prettier --check .",
     "build": "tsc -p .",
-    "build:live": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" -r tsconfig-paths/register src/index.ts",
-    "deploy-commands": "ts-node ./src/deploy/deploy-commands.ts"
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' -r tsconfig-paths/register src/index.ts",
+    "deploy-commands": "ts-node ./util/deploy-commands.ts"
   },
   "engines": {
     "node": "18.x"
