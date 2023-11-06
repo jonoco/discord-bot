@@ -5,6 +5,7 @@ import {
   CommandInteractionOption,
   SlashCommandBuilder,
 } from 'discord.js';
+import { sendQuestion } from '@/services/ai';
 
 const data = new SlashCommandBuilder()
   .setName('ask')
@@ -21,7 +22,8 @@ async function execute(interaction: CommandInteraction) {
 
   console.log('question command', command);
 
-  const {result: validCommand, error: commandError} = validateCommand(command);
+  const { result: validCommand, error: commandError } =
+    validateCommand(command);
   if (commandError) {
     await interaction.reply(commandError.message);
     return;
@@ -37,7 +39,24 @@ async function execute(interaction: CommandInteraction) {
 
   console.log('question', question);
 
-  await interaction.reply(`I don't know anything about ${question}`);
+  await interaction.deferReply();
+
+  try {
+    const { result: answer, error: questionError } = await sendQuestion(question);
+    if (questionError) {
+      await interaction.editReply(questionError.message);
+      return;
+    }
+    
+    const questionEcho = `> _${question}_\n`;
+    await interaction.editReply(`${questionEcho}${answer}`);
+  } catch (error) {
+    console.error(error);
+
+    const errorMsg = error instanceof Error ? error.message : 'There was a problem with your question';
+    await interaction.editReply(errorMsg);
+  }
+
 }
 
 function validateCommand(command: CommandInteractionOption | null) {
