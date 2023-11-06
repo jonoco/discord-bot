@@ -4,6 +4,8 @@ import clientReady from '@/events/client-ready';
 import interactionCreate from '@/events/interaction-create';
 import guildCreate from '@/events/guild-create';
 
+console.log('Starting bot...');
+
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
@@ -14,3 +16,5 @@ client.on(Events.GuildCreate, guildCreate);
 client.on(Events.InteractionCreate, interactionCreate);
 
 client.login(env.DiscordToken);
+
+console.log('Bot started!');
