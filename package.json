@@ -7,7 +7,7 @@
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "dev": "npm run build:live",
     "prettier": "prettier --write .",
-    "lint:tsc" : "tsc --noEmit",
+    "lint:tsc": "tsc --noEmit",
     "lint:prettier": "prettier --check .",
     "build": "tsc -p .",
     "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' -r tsconfig-paths/register src/index.ts",
@@ -22,7 +22,9 @@
   "dependencies": {
     "discord.js": "^14.2.0",
     "dotenv": "^16.0.1 ",
-    "typescript": "^5.2.2"
+    "level": "^8.0.0",
+    "typescript": "^5.2.2",
+    "yaml": "^2.3.4"
   },
   "devDependencies": {
     "@discordjs/builders": "^1.1.0",

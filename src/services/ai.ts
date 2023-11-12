@@ -1,7 +1,17 @@
-import { OpenAiApiResponse } from "@/types/types";
+import { OpenAiApiResponse } from '@/types/types';
+import { models } from '@/config/models';
+import { db } from '@/services/db';
 
 export async function sendQuestion(question: string) {
-  const url = 'http://127.0.0.1:5001/v1/chat/completions';
+  const model = await db.get('model');
+  const adapter = models.find((adapter) => adapter.name === model);
+  if (!adapter) {
+    return { error: new Error('Model not found') };
+  }
+
+  const { url } = adapter;
+  const apiUrl = `${url}/v1/chat/completions`;
+
   const body = {
     messages: [
       {
@@ -11,7 +21,7 @@ export async function sendQuestion(question: string) {
     ],
     mode: 'chat',
   };
-  const response = await fetch(url, {
+  const response = await fetch(apiUrl, {
     method: 'POST',
     body: JSON.stringify(body),
     headers: {
@@ -24,7 +34,7 @@ export async function sendQuestion(question: string) {
   }
 
   const aiResponse: OpenAiApiResponse = await response.json();
-  const choices =  aiResponse.choices;
+  const choices = aiResponse.choices;
   const answer = choices[0].message.content;
 
   return { result: answer };

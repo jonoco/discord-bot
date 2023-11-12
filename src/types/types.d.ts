@@ -24,5 +24,5 @@ interface OpenAiApiChoice {
   message: {
     role: string;
     content: string;
-  }
+  };
 }

@@ -20,8 +20,6 @@ const data = new SlashCommandBuilder()
 async function execute(interaction: CommandInteraction) {
   const command = interaction.options.get('question');
 
-  console.log('question command', command);
-
   const { result: validCommand, error: commandError } =
     validateCommand(command);
   if (commandError) {
@@ -29,34 +27,33 @@ async function execute(interaction: CommandInteraction) {
     return;
   }
 
-  console.log('validCommand', validCommand);
-
   const { result: question, error } = validateQuestion(validCommand);
   if (error) {
     await interaction.reply(error.message);
     return;
   }
 
-  console.log('question', question);
-
   await interaction.deferReply();
 
   try {
-    const { result: answer, error: questionError } = await sendQuestion(question);
+    const { result: answer, error: questionError } =
+      await sendQuestion(question);
     if (questionError) {
       await interaction.editReply(questionError.message);
       return;
     }
-    
+
     const questionEcho = `> _${question}_\n`;
     await interaction.editReply(`${questionEcho}${answer}`);
   } catch (error) {
     console.error(error);
 
-    const errorMsg = error instanceof Error ? error.message : 'There was a problem with your question';
+    const errorMsg =
+      error instanceof Error
+        ? error.message
+        : 'There was a problem with your question';
     await interaction.editReply(errorMsg);
   }
-
 }
 
 function validateCommand(command: CommandInteractionOption | null) {
