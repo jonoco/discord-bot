@@ -11,6 +11,8 @@ Create a `.env` file from the `.env.template` in the root directory of the proje
 
 An OpenAI compatible api will be generated from this collab. The URL can be found in the console after `OpenAI compatible API URL`.
 
+![openai api url](https://github.com/jonoco/discord-bot/assets/6710301/18bf178a-6f6d-4970-82b8-0e20eedc4861)
+
 ### Configure the adapter
 A model adapter will need to be created in `src/config/models` from the `model.template.yml`. For example,
 ```yml
