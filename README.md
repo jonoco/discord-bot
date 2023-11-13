@@ -1,1 +1,1 @@
-# Discord bot template
+# AI discord bot
